@@ -16,7 +16,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/playground', {
 
 const Course = mongoose.model('Course', courseSchema)
  
-async function createcourse() {
+async function createCourse() {
  const course = new Course({
     name: 'Angular Course',
     author: 'Destiny',
@@ -28,23 +28,23 @@ const result = await course.save();
 console.log(result, "Consoling");
 }
 
+
+
+
 async function getcourses() {
-  // eq (equal)
-  // ne (not equal)
-  // gt (greater than)
-  // gte (greater than or equal to)
-  //  lt (less than)
-  // lte (less than or equal to)
-  // in
-  // nin (not in)
-  
+    const pageNumber = 2;
+    const pageSize = 10;
+
     const courses = await Course
-    // .find({ author: 'Destiny', isPublished: true })
-    // .find({ price: { $gt: 10, $lte: 20 } })
-    .find({ price: { $in }})
-    .limit(10)
+    .find({ author: 'Destiny' , isPublished: true })
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
     .sort({  name: 1 })
-    .select({ name:1, tags: 1 });
+    .count();
     console.log(courses);
 } 
+
+
+createCourse()
+
 getcourses();
